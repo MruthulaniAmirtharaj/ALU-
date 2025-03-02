@@ -1,0 +1,24 @@
+module ALU_4bit (
+    input [3:0] A, B,  // 4-bit Inputs
+    input [2:0] sel,   // 3-bit Selection Line
+    output reg [3:0] result,  // 4-bit Output Result
+    output reg carry, zero   // Carry and Zero Flags
+);
+
+always @(*) begin
+    carry = 0;
+    case (sel)
+        3'b000: {carry, result} = A + B;  // Addition
+        3'b001: {carry, result} = A - B;  // Subtraction
+        3'b010: result = A & B;           // AND
+        3'b011: result = A | B;           // OR
+        3'b100: result = A ^ B;           // XOR
+        3'b101: {carry, result} = A * B;  // Multiplication
+        3'b110: result = A << 1;          // Left Shift
+        3'b111: result = A >> 1;          // Right Shift
+        default: result = 4'b0000;        // Default Case
+    endcase
+    zero = (result == 4'b0000) ? 1 : 0;  // Zero flag
+end
+
+endmodule 
